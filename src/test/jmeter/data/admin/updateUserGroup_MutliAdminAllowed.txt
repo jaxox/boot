@@ -1,0 +1,7 @@
+{
+	"name":"updated multi-admin allow",
+	"postRequireApproval":"true",
+    "multipleAdminAllow":"true"
+
+}
+

@@ -1,0 +1,7 @@
+{
+	"name" : "my new group",
+	"description": "this group is for anyone who lives in SF",
+    "postRequireApproval":"true",
+    "multipleAdminAllow":"false"
+}
+

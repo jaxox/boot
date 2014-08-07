@@ -1,0 +1,11 @@
+{
+    "firstName":"jay",
+    "lastName":"yu",
+	"gender": "MALE",
+	"weightUnit":"POUNDS",
+	"heightUnit":"INCHES",
+	"heightInCM":60.0,
+	"weightInKG":160.0,
+	"dob":"2013-11-18"
+}
+

@@ -1,0 +1,4 @@
+{
+	"userRole":"GROUP_ADMIN"
+}
+

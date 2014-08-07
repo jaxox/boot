@@ -1,0 +1,7 @@
+{
+	"intensityLevel" : "L",
+	"activityType": "RUNNING",
+	"exerciseDate": "2013-11-19",
+	"durationInMin": 9
+}
+
