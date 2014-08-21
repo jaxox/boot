@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email (simple)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<p th:text="#{greeting(${name})}">
+
+</p>
+
+<p> Your account has been created, please click on the <a th:href="|${baseUrl}/activation?token=${token}|">account activation link</a>  to verify your account.
+Your account will not be activated until you verify your email address.</p>
+
+<p>
+    Regards, <br />
+    &emsp; <em>The Admin Team</em>
+</p>
+</body>
+</html>

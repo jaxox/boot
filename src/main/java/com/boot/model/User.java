@@ -2,17 +2,20 @@ package com.boot.model;
 
 import com.boot.enums.AccountStatus;
 import com.boot.enums.UserRole;
+import com.boot.util.StringUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,8 +27,6 @@ import java.util.List;
 @Document
 public class User implements Serializable {
 
-
-
     @Id
     private BigInteger id;
 
@@ -33,8 +34,13 @@ public class User implements Serializable {
     @NotEmpty
     @Length(min = 3 , max = 50)
     private String primaryEmail;
+
+    @NotEmpty
+    @Transient
     private String password;
-    private String activationKey;
+
+    private String encryptPassword;
+
 
     //Enums
     @Enumerated
@@ -43,14 +49,14 @@ public class User implements Serializable {
     private AccountStatus accountStatus = AccountStatus.INACTIVE; // Default value
 
     //Embedded documents
-    private List<VerificationToken> verificationTokens = new ArrayList<>();
+
 
     //Reference
     //private UserProfile userProfile;
 
 
-    public synchronized void addVerificationToken(VerificationToken token) {
-        verificationTokens.add(token);
+    public boolean isActive(){
+        return accountStatus == AccountStatus.ACTIVE;
     }
 
 
@@ -69,23 +75,19 @@ public class User implements Serializable {
     }
 
     public void setPrimaryEmail(String primaryEmail) {
-        this.primaryEmail = primaryEmail;
+        //ensure the consistency of the email format
+        this.primaryEmail = StringUtils.normalizeEmail(primaryEmail);
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getActivationKey() {
-        return activationKey;
-    }
-
-    public void setActivationKey(String activationKey) {
-        this.activationKey = activationKey;
+        setEncryptPassword(password);
     }
 
     public UserRole getUserRole() {
@@ -104,21 +106,14 @@ public class User implements Serializable {
         this.accountStatus = accountStatus;
     }
 
-    public List<VerificationToken> getVerificationTokens() {
-        return verificationTokens;
+
+    @JsonIgnore
+    public String getEncryptPassword() {
+        return encryptPassword;
     }
 
-    public void setVerificationTokens(List<VerificationToken> verificationTokens) {
-        this.verificationTokens = verificationTokens;
+    @JsonProperty
+    public void setEncryptPassword(String password) {
+        this.encryptPassword =  new BCryptPasswordEncoder().encode(password);
     }
-
-
-
-
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", name=" + primaryEmail + ", age=" + password + "]";
-    }
-
 }

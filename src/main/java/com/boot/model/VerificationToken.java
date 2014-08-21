@@ -2,6 +2,9 @@ package com.boot.model;
 
 import com.boot.enums.TokenType;
 import org.joda.time.DateTime;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,29 +23,33 @@ import java.util.UUID;
 
 
 /**
- * A token that gives the user permission to carry out a specific task once within a determined time period.
- * An example would be a Lost Password token. The user receives the token embedded in a link.
- * They send the token back to the server by clicking the link and the action is processed
+ * Verification Token is used for giving a permission to a specific user to perform a specific
+ * task once within a pre-determined period of time without authentication.
  *
- * @version 1.0
- * @author: Iain Porter iain.porter@porterhead.com
- * @since 10/09/2012
+ * E.g. Verify email when register and Lost Password.
+ * 1) The user receives an email with the token embedded in a link.
+ * 2) User clicks on the link which sends the token back to the server and the task is processed.
  */
+
+@Document
 public class VerificationToken {
-
-
 
     public static final int EXPIRY_TIME_IN_MINS = 60 * 24; //24 hours
 
     @Id
     private BigInteger id;
+
+    @DBRef
+    private User user;
+    @Indexed
     private final String token;
     private Date expiryDate;
     private boolean verified;
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;
 
-    public VerificationToken(TokenType tokenType) {
+    public VerificationToken(User user, TokenType tokenType) {
+        this.user = user;
         this.tokenType = tokenType;
         this.expiryDate = calculateExpiryDate(EXPIRY_TIME_IN_MINS);
         this.token = UUID.randomUUID().toString();
@@ -56,6 +63,10 @@ public class VerificationToken {
     public boolean hasExpired() {
         DateTime tokenDate = new DateTime(getExpiryDate());
         return tokenDate.isBeforeNow();
+    }
+
+    public void resetExpiredTime() {
+        calculateExpiryDate(EXPIRY_TIME_IN_MINS);
     }
 
 
@@ -95,6 +106,15 @@ public class VerificationToken {
 
     public void setTokenType(TokenType tokenType) {
         this.tokenType = tokenType;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 

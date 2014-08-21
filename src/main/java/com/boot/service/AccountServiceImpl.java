@@ -8,55 +8,155 @@ package com.boot.service;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.boot.enums.AccountStatus;
 import com.boot.enums.TokenType;
 import com.boot.exception.DuplicateEntryException;
+import com.boot.exception.UnauthorizedRequestException;
 import com.boot.model.User;
 import com.boot.model.VerificationToken;
 import com.boot.repository.UserRepository;
+import com.boot.repository.VerificationTokenRepository;
 import com.boot.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
     final static Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
+
+    @Value("${custom.server.base.url}")
+    String url;
+
     @Autowired private UserRepository userRep;
+    @Autowired private VerificationTokenRepository tokenRep;
+    @Autowired private EmailService emailService;
+    @Autowired private AuthenticationManager authenticationManager;
+
 
     @Override
     public User createUserAccount(User user) {
 
-        String normalizedEmail = StringUtils.normalizeEmail(user.getPrimaryEmail());
+        String email = user.getPrimaryEmail();
 
-        // if not null (found) means it is already stored in the persistence.
-        if( userRep.findByPrimaryEmail(normalizedEmail)!=null ){
-           throw new DuplicateEntryException(normalizedEmail + " is already registered ");
+        if( userRep.findByPrimaryEmail(email)!=null ){
+           throw new DuplicateEntryException(email + " is already registered ");
         }
 
-        user.setPrimaryEmail(normalizedEmail);
-
-        VerificationToken token = new VerificationToken(TokenType.EMAIL_VERIFICATION);
-        user.addVerificationToken(token);
-
-        String activationTokenKey = token.getToken();
+        //the User Id is needed for the token
+        user = userRep.save(user);
+        VerificationToken token = tokenRep.save(new VerificationToken(user,TokenType.ACCOUNT_ACTIVATION));
 
 
-        //Mapping the data in the email template!
-        Map<String,Object> emailTemplateParams = new HashMap<>();
-        //setEmailTemplateParam(user.getPrimaryEmail(), activationKey,emailTemplateParams);
-        //emailHandler.sendEmail(user.getPrimaryEmail() ,null, subject, EmailHandler.EmailTemplate.ACTIVATION, emailTemplateParams);
+        //Preparing Email
+        final Context ctx = new Context(Locale.ENGLISH);
+        ctx.setVariable("token", token.getToken());
+        ctx.setVariable("baseUrl", url);
 
-        return userRep.save(user);
+        emailService.sendEmail(email, EmailService.EmailTemplate.ACTIVATION, ctx);
+
+        return user;
     }
 
+    @Override
+    public boolean activateAccount(String tokenStr) {
+
+        VerificationToken token = tokenRep.findByToken(tokenStr);
+        boolean isAccTokenActive = token.getTokenType().equals(TokenType.ACCOUNT_ACTIVATION) && isTokenActive(token);
+
+        if(isAccTokenActive==false){
+           return false;//throw new UnauthorizedRequestException("The token is either already used or expired or assigned for another task");
+        }
+
+        //Activate user account
+        User user = token.getUser();
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        userRep.save(user);
+
+        //token is used
+        token.setVerified(true);
+        tokenRep.save(token);
+
+        return true;
+    }
+
+    private boolean isTokenActive(VerificationToken token) {
+        return !token.hasExpired() && !token.isVerified();
+    }
+
+
+
+
+    @Override
+    public void resendAccountActivationEmail(String email) {
+
+        User user = userRep.findByPrimaryEmail(StringUtils.normalizeEmail(email));
+
+        if (user == null) {
+            throw new UsernameNotFoundException("Your email is not registered: " + email);
+        }
+
+        //Reuse the token if possible; should be only one active ACCOUNT_ACTIVATION token per user
+        VerificationToken token = tokenRep.findByTokenTypeAndUserAndVerifiedIsFalse(TokenType.ACCOUNT_ACTIVATION,user);
+        if (token == null) {
+            token = new VerificationToken(user, TokenType.ACCOUNT_ACTIVATION);
+        }else{
+            token.resetExpiredTime();
+        }
+        tokenRep.save(token);
+
+
+        //Preparing Email
+        final Context ctx = new Context(Locale.ENGLISH);
+        ctx.setVariable("token", token.getToken());
+        ctx.setVariable("baseUrl", url);
+
+        emailService.sendEmail(email, EmailService.EmailTemplate.ACTIVATION, ctx);
+    }
+
+
+    //Currently working on
+
+    @Override
+    public User login(User request) {
+        try {
+
+            Authentication token = new UsernamePasswordAuthenticationToken(request.getPrimaryEmail(), request.getPassword());
+            Authentication authentication = authenticationManager.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            User user = userRep.findByPrimaryEmail(request.getPrimaryEmail());
+
+            if(user==null || !user.isActive()){
+                throw new UnauthorizedRequestException("Inactive account");
+            }
+
+            return user;
+
+
+        } catch (AuthenticationException ex) {  //for authenticationManger.authenticate
+            logger.debug(ex.toString() + " E:" + request.getPrimaryEmail() + " P:" + request.getPassword());
+            throw new UnauthorizedRequestException(ex.toString());
+        }
+
+    }
+
+    //Not yet done
 
     @Override
     public User findByUserId(String userId) {

@@ -127,4 +127,9 @@ public interface AccountService {
 
     User createUserAccount(User user);
 
+    boolean activateAccount(String token);
+
+    void resendAccountActivationEmail(String email);
+
+    User login(User request);
 }

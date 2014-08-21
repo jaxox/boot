@@ -8,7 +8,10 @@ package com.boot.enums;
  * To change this template use File | Settings | File Templates.
  */
 public enum TokenType {
+    //Try to use action name to description the type of action going to process
+
+
     FORGOT_PASSWORD,
-    EMAIL_VERIFICATION,
+    ACCOUNT_ACTIVATION,
     REGISTRATION
 }
