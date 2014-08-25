@@ -132,6 +132,7 @@ public class AccountServiceImpl implements AccountService {
 
     //Currently working on
 
+    //TODO:Next - security
     @Override
     public User login(User request) {
         try {
@@ -148,12 +149,10 @@ public class AccountServiceImpl implements AccountService {
 
             return user;
 
-
         } catch (AuthenticationException ex) {  //for authenticationManger.authenticate
             logger.debug(ex.toString() + " E:" + request.getPrimaryEmail() + " P:" + request.getPassword());
             throw new UnauthorizedRequestException(ex.toString());
         }
-
     }
 
     //Not yet done

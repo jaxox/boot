@@ -54,7 +54,7 @@ public class User implements Serializable {
     //Reference
     //private UserProfile userProfile;
 
-
+    @JsonIgnore
     public boolean isActive(){
         return accountStatus == AccountStatus.ACTIVE;
     }

@@ -1,5 +1,6 @@
 package com.boot;
 
+import com.boot.security.RestAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,9 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.Arrays;
@@ -39,10 +44,17 @@ public class Application extends WebMvcConfigurerAdapter {
         return new ApplicationSecurity();
     }
 
-//    @Bean
-//    public AuthenticationSecurity authenticationSecurity() {
-//        return new AuthenticationSecurity();
-//    }
+    @Bean
+    public AuthenticationSecurity authenticationSecurity() {
+        return new AuthenticationSecurity();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 
 
     @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -59,7 +71,7 @@ public class Application extends WebMvcConfigurerAdapter {
 
 
 
-            http.authorizeRequests().antMatchers("/api/secure/**").fullyAuthenticated();
+            //http.authorizeRequests().antMatchers("/api/secure/**").fullyAuthenticated();
 
 
             //Permit All
@@ -74,20 +86,27 @@ public class Application extends WebMvcConfigurerAdapter {
     }
 
 
-//    @Order(Ordered.HIGHEST_PRECEDENCE + 10)
-//    protected static class AuthenticationSecurity extends  GlobalAuthenticationConfigurerAdapter {
-//
-////        @Autowired
-////        private DataSource dataSource;
-//
-//        @Override
-//        public void init(AuthenticationManagerBuilder auth) throws Exception {
-//            auth.authenticationProvider(new RestAuthenticationProvider());
-//
-////            auth.jdbcAuthentication().dataSource(this.dataSource).withUser("admin")
-////                    .password("admin").roles("ADMIN", "USER").and().withUser("user")
-////                    .password("user").roles("USER");
+    @Order(Ordered.HIGHEST_PRECEDENCE + 10)
+    protected static class AuthenticationSecurity extends GlobalAuthenticationConfigurerAdapter {
+
+
+        @Autowired
+        private RestAuthenticationProvider restAuthenticationProvider;
+
+//        @Bean
+//        public RestAuthenticationProvider restAuthenticationProvider() {
+//            return new RestAuthenticationProvider();
 //        }
-//    }
+
+        @Override
+        public void init(AuthenticationManagerBuilder auth) throws Exception {
+
+            auth.authenticationProvider(restAuthenticationProvider);
+
+//            auth.jdbcAuthentication().dataSource(this.dataSource).withUser("admin")
+//                    .password("admin").roles("ADMIN", "USER").and().withUser("user")
+//                    .password("user").roles("USER");
+        }
+    }
 
 }

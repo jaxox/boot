@@ -7,10 +7,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * Time: 1:44 PM
  */
 @RequestMapping("/api/login")
-@Controller
+@RestController
 public class LoginController  {
 
     protected final Log logger = LogFactory.getLog(this.getClass());

@@ -1,4 +1,4 @@
-package com.boot.web;
+package com.boot;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

@@ -66,7 +66,7 @@ public class VerificationToken {
     }
 
     public void resetExpiredTime() {
-        calculateExpiryDate(EXPIRY_TIME_IN_MINS);
+        this.expiryDate = calculateExpiryDate(EXPIRY_TIME_IN_MINS);
     }
 
 
