@@ -77,10 +77,11 @@ public class AccountServiceImpl implements AccountService {
     public boolean activateAccount(String tokenStr) {
 
         VerificationToken token = tokenRep.findByToken(tokenStr);
-        boolean isAccTokenActive = token.getTokenType().equals(TokenType.ACCOUNT_ACTIVATION) && isTokenActive(token);
 
-        if(isAccTokenActive==false){
-           return false;//throw new UnauthorizedRequestException("The token is either already used or expired or assigned for another task");
+        //Check is the token still active and is an account activation token
+        boolean isAccTokenActive = token.getTokenType().equals(TokenType.ACCOUNT_ACTIVATION) && isTokenActive(token);
+        if(!isAccTokenActive){
+           return false;
         }
 
         //Activate user account
@@ -88,7 +89,7 @@ public class AccountServiceImpl implements AccountService {
         user.setAccountStatus(AccountStatus.ACTIVE);
         userRep.save(user);
 
-        //token is used
+        //After activate the user, set the token is used
         token.setVerified(true);
         tokenRep.save(token);
 
