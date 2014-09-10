@@ -85,11 +85,8 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
     /* Determines if this class can support the token provided by the filter. */
     @Override
     public boolean supports(Class<?> authentication) {
-
-
         boolean isSuperClasss = UsernamePasswordAuthenticationToken.class.equals(authentication);
-
-        return (isSuperClasss)? true : RestToken.class.equals(authentication);
+        return isSuperClasss || RestToken.class.equals(authentication);
     }
 
 

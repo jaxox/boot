@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,14 +18,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
  * User: jyu
  * Date: 8/4/14
  * Time: 2:01 PM
- * To change this template use File | Settings | File Templates.
- */
+  */
 @Document
 public class User implements Serializable {
 
@@ -49,7 +52,7 @@ public class User implements Serializable {
     private AccountStatus accountStatus = AccountStatus.INACTIVE; // Default value
 
     //Embedded documents
-
+    private Map<String,ContactNode> contactInfo = new LinkedHashMap<String,ContactNode>();
 
     //Reference
     //private UserProfile userProfile;
@@ -58,6 +61,15 @@ public class User implements Serializable {
     public boolean isActive(){
         return accountStatus == AccountStatus.ACTIVE;
     }
+
+
+
+
+    @CreatedDate
+    private DateTime creationDate;
+
+    //@LastModifiedDate
+    //private DateTime modificationDate;
 
 
     /** Getter and Setter **/
@@ -116,4 +128,14 @@ public class User implements Serializable {
     public void setEncryptPassword(String password) {
         this.encryptPassword =  new BCryptPasswordEncoder().encode(password);
     }
+
+    public Map<String, ContactNode> getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(Map<String, ContactNode> contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+
 }

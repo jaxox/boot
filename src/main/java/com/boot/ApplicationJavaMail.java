@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.util.Properties;
+
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("classpath:/application.properties")
@@ -23,9 +25,19 @@ public class ApplicationJavaMail {
     @Value("${mail.server.password}")
     String password;
 
+    @Value("${mail.smtp.starttls.enable}")
+    boolean starttls;
+
     @Bean
     public JavaMailSenderImpl mailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+
+        //For gmail testing only
+        if(starttls){
+            Properties jmp = new Properties();
+            jmp.put("mail.smtp.starttls.enable",true);
+            javaMailSender.setJavaMailProperties(jmp);
+        }
 
         javaMailSender.setProtocol(protocoal);
         javaMailSender.setHost(host);
