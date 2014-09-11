@@ -10,9 +10,9 @@ import com.boot.exception.ObjectNotFoundException;
  * To change this template use File | Settings | File Templates.
  */
 public class RestPreconditions {
-    public static <T> T checkFound(final T resource) {
+    public static <T> T checkFound(final T resource, final String str) {
         if (resource == null) {
-            throw new ObjectNotFoundException("Not found");
+            throw new ObjectNotFoundException( str +" is not found");
         }
         return resource;
     }

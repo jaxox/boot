@@ -3206,7 +3206,7 @@
             <hashTree/>
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get Newly created exe entry&apos;s id" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">exeid</stringProp>
+              <stringProp name="RegexExtractor.refname">sid</stringProp>
               <stringProp name="RegexExtractor.regex">{&quot;id&quot;:(.+?),</stringProp>
               <stringProp name="RegexExtractor.template">$1$</stringProp>
               <stringProp name="RegexExtractor.default">0</stringProp>
@@ -3246,7 +3246,7 @@
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Update SocialIdea" enabled="false">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Update SocialIdea" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -3256,7 +3256,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/api/secure/users/1</stringProp>
+            <stringProp name="HTTPSampler.path">/api/secure/ideas/${sid}</stringProp>
             <stringProp name="HTTPSampler.method">PUT</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3264,8 +3264,8 @@
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
             <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
               <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/home/jyu/Project/head/healthline/ge/weight-tracker/src/test/jmeter/data/updateUser1.txt" elementType="HTTPFileArg">
-                  <stringProp name="File.path">/home/jyu/Project/head/healthline/ge/weight-tracker/src/test/jmeter/data/updateUser1.txt</stringProp>
+                <elementProp name="/home/jyu/Project/pvt/boot/src/test/jmeter/data/update_SocialIdea_User1.txt" elementType="HTTPFileArg">
+                  <stringProp name="File.path">/home/jyu/Project/pvt/boot/src/test/jmeter/data/update_SocialIdea_User1.txt</stringProp>
                   <stringProp name="File.paramname"></stringProp>
                   <stringProp name="File.mimetype">application/json</stringProp>
                 </elementProp>

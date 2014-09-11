@@ -9,7 +9,6 @@ package com.boot.repository;
  */
 
 import com.boot.model.SocialIdea;
-import com.boot.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -18,7 +17,7 @@ import java.math.BigInteger;
 
 public interface SocialIdeaRepository extends MongoRepository<SocialIdea,BigInteger> {
 
-    User findById(String id);
+    SocialIdea findById(String id);
     Page findAll(Pageable pageable);
 
 }

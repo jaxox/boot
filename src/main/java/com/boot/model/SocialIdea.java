@@ -1,7 +1,10 @@
 package com.boot.model;
 
 import org.joda.time.LocalDateTime;
+import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,21 +17,17 @@ import java.util.Map;
  */
 public class SocialIdea extends AbstractDocument {
 
-
-
-    private BigInteger userId;
-
+    @NotNull
+    @NumberFormat
+    private BigInteger creatorId;
     private String description;
-
-
     private LocalDateTime startTime;
-
     private LocalDateTime endTime;
-
     private String location;
 
     /**Embedded documents**/
-    //Map< [NameOfIdeas] , Map< [UserId] , [UserName] >>
+    //Map< [NameOfIdeas] , Map< [UserId who likes the idea] , [UserName] >>
+    @Size(min = 1, max = 10)
     private Map<String,Map<BigInteger,String >> ideas = new LinkedHashMap<String,Map<BigInteger,String >>();
 
 
@@ -36,12 +35,12 @@ public class SocialIdea extends AbstractDocument {
 
 
     /** Getter and Setter **/
-    public BigInteger getUserId() {
-        return userId;
+    public BigInteger getCreatorId() {
+        return creatorId;
     }
 
-    public void setUserId(BigInteger userId) {
-        this.userId = userId;
+    public void setCreatorId(BigInteger creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getDescription() {

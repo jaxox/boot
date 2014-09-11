@@ -1,0 +1,8 @@
+{
+    "creatorId"  : "26016907172581313826649408733",
+    "description": "Just a testing idea and update version",
+    "startTime"  : "2014-09-13T10:00:00",
+    "endTime"    : "",
+    "location"   : "south of market, SF"
+}
+

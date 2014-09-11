@@ -44,12 +44,14 @@ public class SocialIdeaController {
 
 
     /**
+     * Security: Owner
      * Update the SocialIdea
-     *
+     * - No auto validation; as ideas can't be changed
+     * - Only can update the description, startTime, endTime and location
      */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SocialIdea update(@PathVariable("id") BigInteger id, @RequestBody @Valid SocialIdea request) {
+    public SocialIdea update(@PathVariable("id") BigInteger id, @RequestBody SocialIdea request) {
         return socialIdeaService.update(id,request);
     }
 
