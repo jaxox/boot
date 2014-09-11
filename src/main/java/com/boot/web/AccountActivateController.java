@@ -28,6 +28,7 @@ public class AccountActivateController {
     @Autowired
     private AccountService accountService;
 
+    //TODO: need more return code e.g. use int instead, with string to display the error
     @RequestMapping(value = "/activation",method = RequestMethod.GET)
     public ModelAndView activateAccount(HttpServletRequest request) {
         boolean isActivationSucceed = accountService.activateAccount(request.getParameter("token"));

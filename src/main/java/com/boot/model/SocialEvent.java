@@ -11,8 +11,8 @@ import java.math.BigInteger;
  * User: jyu
  * Date: 9/4/14
  * Time: 2:50 PM
-
  */
+
 @Document
 public class SocialEvent {
 

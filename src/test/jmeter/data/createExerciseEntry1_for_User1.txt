@@ -1,8 +1,0 @@
-{
-	"intensityLevel" : "H",
-	"activityType": "AEROBICS",
-    "exerciseDate": "2014-01-13",
-	"durationInMin": 999,
-	"calorie": 9169
-}
-

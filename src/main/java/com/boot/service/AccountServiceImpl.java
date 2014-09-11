@@ -77,6 +77,9 @@ public class AccountServiceImpl implements AccountService {
     public boolean activateAccount(String tokenStr) {
 
         VerificationToken token = tokenRep.findByToken(tokenStr);
+        if(token==null ){
+            return false;
+        }
 
         //Check is the token still active and is an account activation token
         boolean isAccTokenActive = token.getTokenType().equals(TokenType.ACCOUNT_ACTIVATION) && isTokenActive(token);

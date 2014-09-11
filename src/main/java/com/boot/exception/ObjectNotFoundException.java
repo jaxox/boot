@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Date: 11/7/13
  * Time: 4:02 PM
  */
-@ResponseStatus( value = HttpStatus.UNAUTHORIZED)
-public class UnauthorizedRequestException extends RuntimeException {
+@ResponseStatus( value = HttpStatus.NOT_FOUND )
+public class ObjectNotFoundException extends RuntimeException {
 
-    public UnauthorizedRequestException(String message) {
+    public ObjectNotFoundException(String message) {
         super(message);
     }
 }

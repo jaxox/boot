@@ -8,16 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Enumerated;
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,35 +21,34 @@ import java.util.Map;
  * Date: 8/4/14
  * Time: 2:01 PM
   */
-@Document
-public class User implements Serializable {
-
-    @Id
-    private BigInteger id;
+public class User extends AbstractDocument{
 
     @Email
     @NotEmpty
     @Length(min = 3 , max = 50)
     private String primaryEmail;
-
     @NotEmpty
     @Transient
     private String password;
-
     private String encryptPassword;
+    private String userName;
 
 
-    //Enums
+    /**Enums**/
     @Enumerated
     private UserRole userRole = UserRole.USER; // Default value
     @Enumerated
     private AccountStatus accountStatus = AccountStatus.INACTIVE; // Default value
 
-    //Embedded documents
+
+    /**Embedded documents**/
     private Map<String,ContactNode> contactInfo = new LinkedHashMap<String,ContactNode>();
 
-    //Reference
+
+    /**Reference**/
     //private UserProfile userProfile;
+
+
 
     @JsonIgnore
     public boolean isActive(){
@@ -64,24 +57,7 @@ public class User implements Serializable {
 
 
 
-
-    @CreatedDate
-    private DateTime creationDate;
-
-    //@LastModifiedDate
-    //private DateTime modificationDate;
-
-
     /** Getter and Setter **/
-    public BigInteger getId() {
-
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
-
     public String getPrimaryEmail() {
         return primaryEmail;
     }
@@ -118,7 +94,6 @@ public class User implements Serializable {
         this.accountStatus = accountStatus;
     }
 
-
     @JsonIgnore
     public String getEncryptPassword() {
         return encryptPassword;
@@ -137,5 +112,11 @@ public class User implements Serializable {
         this.contactInfo = contactInfo;
     }
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }
