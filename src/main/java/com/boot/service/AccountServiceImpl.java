@@ -12,8 +12,10 @@ import com.boot.enums.AccountStatus;
 import com.boot.enums.TokenType;
 import com.boot.exception.DuplicateEntryException;
 import com.boot.exception.UnauthorizedRequestException;
+import com.boot.model.SocialIdea;
 import com.boot.model.User;
 import com.boot.model.VerificationToken;
+import com.boot.repository.SocialIdeaRepository;
 import com.boot.repository.UserRepository;
 import com.boot.repository.VerificationTokenRepository;
 import com.boot.util.StringUtils;
@@ -43,10 +45,12 @@ public class AccountServiceImpl implements AccountService {
     @Value("${custom.server.base.url}")
     String url;
 
+    @Autowired private SocialIdeaRepository socialIdeaRep;
     @Autowired private UserRepository userRep;
     @Autowired private VerificationTokenRepository tokenRep;
     @Autowired private EmailService emailService;
     @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private AuthorizationService authorizationService;
 
 
     @Override
@@ -157,6 +161,12 @@ public class AccountServiceImpl implements AccountService {
             logger.debug(ex.toString() + " E:" + request.getPrimaryEmail() + " P:" + request.getPassword());
             throw new UnauthorizedRequestException(ex.toString());
         }
+    }
+
+    @Override
+    public List<SocialIdea> getAllSocialIdea(String userId) {
+        authorizationService.checkAuthorization(userId);
+        return socialIdeaRep.findByIndividualUsers(userId);
     }
 
     //Not yet done

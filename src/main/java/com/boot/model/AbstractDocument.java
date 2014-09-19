@@ -7,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +18,7 @@ import java.math.BigInteger;
 public abstract class AbstractDocument implements Serializable {
 
     @Id
-    private BigInteger id;
+    private String id;
     @CreatedDate
     private DateTime creationDate;
     @LastModifiedDate
@@ -28,11 +27,11 @@ public abstract class AbstractDocument implements Serializable {
 
 
     /** Getter and Setter **/
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 

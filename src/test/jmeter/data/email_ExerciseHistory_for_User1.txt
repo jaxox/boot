@@ -1,6 +1,0 @@
-{
-	"fromDate": "2013-01-13",
-	"toDate": "2014-01-13",
-	"dataType": "EXERCISE"
-
-}

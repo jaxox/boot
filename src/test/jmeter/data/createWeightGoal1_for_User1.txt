@@ -1,6 +1,0 @@
-{
-	"targetWeightInKG":190.0,
-	"duration":4,
-	"timeUnit":"MONTH"
-}
-

@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import java.math.BigInteger;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -37,7 +37,7 @@ public class VerificationToken {
     public static final int EXPIRY_TIME_IN_MINS = 60 * 24; //24 hours
 
     @Id
-    private BigInteger id;
+    private String id;
 
     @DBRef
     private User user;
@@ -72,11 +72,11 @@ public class VerificationToken {
 
     /** Getter and Setter **/
 
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,5 +1,5 @@
 {
-    "creatorId"     : "26016907172581313826649408733",
+    "creatorId"  : "5418a214e4b0e4a40ea1d546",
     "description": "Just a testing idea",
     "startTime"  : "2014-09-13T09:00:00",
     "endTime"    : "2014-09-15T09:00:00",

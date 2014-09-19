@@ -11,8 +11,9 @@ import com.boot.model.SocialIdea;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface SocialIdeaService {
 
@@ -23,7 +24,7 @@ public interface SocialIdeaService {
      * @return null if not found
      */
     SocialIdea findById(String id);
-    SocialIdea findById(BigInteger id);
+
 
     /**
      * Gets all users in the database.
@@ -32,6 +33,8 @@ public interface SocialIdeaService {
      * @return
      */
     List<SocialIdea> getAll();
+
+
 
     /**
      * Gets all users in the database page by page.
@@ -62,7 +65,17 @@ public interface SocialIdeaService {
      * @param socialIdea
      * @return
      */
-    SocialIdea update(BigInteger id, SocialIdea socialIdea);
+    SocialIdea update(String id, SocialIdea socialIdea);
+
+
+
+    SocialIdea like(String socialIdeaId, Set<String> likedIdeaNames);
+    SocialIdea addUsers(String socialIdeaId, Map<String,String> SharedToUsers);
+    SocialIdea addGroups(String socialIdeaId, Map<String,String> SharedToGroups);
+
+
+
+
 
     /**
      * Deletes a SocialIdea
@@ -71,9 +84,13 @@ public interface SocialIdeaService {
      * @return
      */
     void delete(SocialIdea socialIdea);
-    void delete(BigInteger id);
+    void delete(String id);
 
 
+    /**
+     *
+     */
+    //
 
 
 }

@@ -13,11 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.math.BigInteger;
+import java.util.List;
 
-public interface SocialIdeaRepository extends MongoRepository<SocialIdea,BigInteger> {
+public interface SocialIdeaRepository extends MongoRepository<SocialIdea,String> {
 
     SocialIdea findById(String id);
+
+    List<SocialIdea> findByIndividualUsers(String id);
+
     Page findAll(Pageable pageable);
+
 
 }

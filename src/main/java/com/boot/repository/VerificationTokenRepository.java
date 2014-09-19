@@ -13,9 +13,7 @@ import com.boot.model.User;
 import com.boot.model.VerificationToken;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.math.BigInteger;
-
-public interface VerificationTokenRepository extends MongoRepository<VerificationToken,BigInteger> {
+public interface VerificationTokenRepository extends MongoRepository<VerificationToken,String> {
 
 //    User findById(String id);
 //

@@ -8,6 +8,7 @@ package com.boot.service;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.boot.model.SocialIdea;
 import com.boot.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -132,4 +133,13 @@ public interface AccountService {
     void resendAccountActivationEmail(String email);
 
     User login(User request);
+
+
+
+    /**
+     * Gets all SocialIdeas that is either shared to the user or is created by the user.
+     *
+     * @return
+     */
+    List<SocialIdea> getAllSocialIdea(String userId);
 }

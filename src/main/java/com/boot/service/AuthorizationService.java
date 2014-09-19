@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-
 /**
  * User: jyu
  * Date: 9/11/14
@@ -32,7 +30,7 @@ public class AuthorizationService {
     }
 
 
-    public boolean checkAuthorization(BigInteger userId){
+    public boolean checkAuthorization(String userId){
         if(!getLoggedInUser().getId().equals(userId)){
             throw new UnauthorizedRequestException("Your userId from the request is not matching with your login id");
         }

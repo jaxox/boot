@@ -1,10 +1,9 @@
 package com.boot.model;
 
 import org.joda.time.LocalDateTime;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigInteger;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,8 +15,7 @@ import java.math.BigInteger;
 @Document
 public class SocialEvent {
 
-    @Id
-    private BigInteger id;
+
 
     private String title;
 

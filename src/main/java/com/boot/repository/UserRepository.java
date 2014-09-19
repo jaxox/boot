@@ -13,11 +13,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.math.BigInteger;
+import java.util.List;
+import java.util.Set;
 
-public interface UserRepository extends MongoRepository<User,BigInteger> {
+public interface UserRepository extends MongoRepository<User,String> {
 
     User findById(String id);
+
+    List<User> findByIdIn(Set<String> ids);
 
     User findByPrimaryEmail(String email);
 
