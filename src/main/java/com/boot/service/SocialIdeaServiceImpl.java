@@ -2,6 +2,7 @@ package com.boot.service;
 
 import com.boot.exception.BadRequestException;
 import com.boot.exception.ObjectNotFoundException;
+import com.boot.model.IndividualUserNode;
 import com.boot.model.SocialIdea;
 import com.boot.model.User;
 import com.boot.repository.SocialIdeaRepository;
@@ -156,7 +157,7 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
         //Is owner?
         authorizationService.checkAuthorization(socialIdeaInDB.getCreatorId());
         //Currently persisted map and use it to add the new ones
-        Map<String,String> persistedUsers = socialIdeaInDB.getIndividualUsers();
+        List<IndividualUserNode> persistedUsers = socialIdeaInDB.getIndividualUsers();
 
         //Find the users that are in persistance
         Set<String> newUserIds = newUsers.keySet();
@@ -176,7 +177,7 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
 
 
         for(User newUser : foundedUsers){
-            persistedUsers.put(newUser.getId(), newUser.getUserName());
+            persistedUsers.add(new IndividualUserNode(newUser.getId(), newUser.getUserName() ) );
         }
 
         return socialIdeaRep.save(socialIdeaInDB);

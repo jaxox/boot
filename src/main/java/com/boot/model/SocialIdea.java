@@ -5,10 +5,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: jyu on 9/4/14
@@ -37,8 +34,11 @@ public class SocialIdea extends AbstractDocument {
     private Map<String,String > groups = new HashMap<String,String >();
 
     // this socialIdea is sharing to the individual users
+//    @Size(max = 1000)
+//    private Map<String,String > individualUsers = new HashMap<String,String >();
+
     @Size(max = 1000)
-    private Map<String,String > individualUsers = new HashMap<String,String >();
+    private List<IndividualUserNode> individualUsers = new LinkedList<IndividualUserNode>();
 
 
 
@@ -97,13 +97,6 @@ public class SocialIdea extends AbstractDocument {
     }
 
 
-    public Map<String, String> getIndividualUsers() {
-        return individualUsers;
-    }
-
-    public void setIndividualUsers(Map<String, String> individualUsers) {
-        this.individualUsers = individualUsers;
-    }
 
     public Map<String, String> getGroups() {
         return groups;
@@ -111,5 +104,13 @@ public class SocialIdea extends AbstractDocument {
 
     public void setGroups(Map<String, String> groups) {
         this.groups = groups;
+    }
+
+    public List<IndividualUserNode> getIndividualUsers() {
+        return individualUsers;
+    }
+
+    public void setIndividualUsers(List<IndividualUserNode> individualUsers) {
+        this.individualUsers = individualUsers;
     }
 }

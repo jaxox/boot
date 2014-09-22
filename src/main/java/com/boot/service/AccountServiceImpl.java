@@ -164,9 +164,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<SocialIdea> getAllSocialIdea(String userId) {
+    public List<SocialIdea> getAllSocialIdeasSharedTo(String userId) {
         authorizationService.checkAuthorization(userId);
-        return socialIdeaRep.findByIndividualUsers(userId);
+        return socialIdeaRep.findByIndividualUsersUid(userId);
+    }
+
+
+    @Override
+    public List<SocialIdea> getAllSocialIdeas(String userId) {
+        authorizationService.checkAuthorization(userId);
+        return socialIdeaRep.findByCreatorId(userId);
     }
 
     //Not yet done

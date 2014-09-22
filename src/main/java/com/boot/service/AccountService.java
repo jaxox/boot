@@ -137,9 +137,17 @@ public interface AccountService {
 
 
     /**
-     * Gets all SocialIdeas that is either shared to the user or is created by the user.
+     * Gets all SocialIdeas that is shared to the user.
      *
      * @return
      */
-    List<SocialIdea> getAllSocialIdea(String userId);
+    List<SocialIdea> getAllSocialIdeasSharedTo(String userId);
+
+
+    /**
+     * Gets all SocialIdeas that is created by the user.
+     *
+     * @return
+     */
+    List<SocialIdea> getAllSocialIdeas(String userId);
 }
