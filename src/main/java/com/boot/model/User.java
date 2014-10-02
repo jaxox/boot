@@ -24,14 +24,15 @@ import java.util.Map;
 public class User extends AbstractDocument{
 
     @Email
-    @NotEmpty
+    //@NotEmpty
     @Length(min = 3 , max = 50)
     private String primaryEmail;
     @NotEmpty
     @Transient
     private String password;
     private String encryptPassword;
-    private String userName;
+
+    private String username;
 
 
     /**Enums**/
@@ -56,6 +57,18 @@ public class User extends AbstractDocument{
     }
 
 
+    //
+    public User(){
+    }
+
+    public User(String password, String username, String primaryEmail){
+        setPassword(password); //also encrypted the password and set the encrptedPassword
+        this.username = username;
+        this.primaryEmail = primaryEmail;
+    }
+
+
+
 
     /** Getter and Setter **/
     public String getPrimaryEmail() {
@@ -64,7 +77,7 @@ public class User extends AbstractDocument{
 
     public void setPrimaryEmail(String primaryEmail) {
         //ensure the consistency of the email format
-        this.primaryEmail = StringUtils.normalizeEmail(primaryEmail);
+        this.primaryEmail = StringUtils.normalizeStr(primaryEmail);
     }
 
     @JsonIgnore
@@ -112,11 +125,11 @@ public class User extends AbstractDocument{
         this.contactInfo = contactInfo;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

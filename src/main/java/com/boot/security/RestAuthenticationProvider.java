@@ -2,7 +2,7 @@ package com.boot.security;
 
 import com.boot.exception.UnauthorizedRequestException;
 import com.boot.model.User;
-import com.boot.repository.UserRepository;
+import com.boot.service.AccountService;
 import com.boot.util.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +31,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
     protected final Log logger = LogFactory.getLog(this.getClass());
 
     @Autowired
-    private UserRepository userRep;
+    private AccountService accountService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -40,25 +40,26 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 
         boolean isSuperClass = UsernamePasswordAuthenticationToken.class.equals(authentication.getClass());
 
-        String email;
+        String login;//can be username or email
         String plainPassword;
 
         if (isSuperClass) {
             UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-            email = token.getName();
+            login = token.getName();
             plainPassword = (String)token.getCredentials();
         }else{
             RestToken token = (RestToken) authentication;
-            email = token.getKey();
+            login = token.getKey();
             plainPassword = token.getCredentials();
         }
 
-        User user = userRep.findByPrimaryEmail(StringUtils.normalizeEmail(email));
+        User user = accountService.findByLogin(login);
+
 
         if ( user==null || !passwordEncoder.matches(plainPassword,user.getEncryptPassword()) ) {
             logger.debug("isSuperClass:" + isSuperClass+
-                         " Email before normalized:" +email+
-                         " After normalized:"+StringUtils.normalizeEmail(email)+
+                         " Login before normalized:" +login+
+                         " After normalized:"+StringUtils.normalizeStr(login)+
                          " isUserFound:"+ (user!=null) +
                          " isPasswordMatch:" + ((user!=null)? passwordEncoder.matches(plainPassword,user.getEncryptPassword()) : "false") );
             throw new UnauthorizedRequestException("username and/or password do not match");
@@ -68,7 +69,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         //user.getRoleType();
         //return getAuthenticatedUser(key, credentials, isAdmin);
 
-        return getAuthenticatedUser(email, plainPassword, isSuperClass);
+        return getAuthenticatedUser(login, plainPassword, isSuperClass);
     }
 
     private Authentication getAuthenticatedUser(String key, String credentials, boolean isSuperClass) {
@@ -84,9 +85,9 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 
     /* Determines if this class can support the token provided by the filter. */
     @Override
-    public boolean supports(Class<?> authentication) {
-        boolean isSuperClasss = UsernamePasswordAuthenticationToken.class.equals(authentication);
-        return isSuperClasss || RestToken.class.equals(authentication);
+    public boolean supports(Class<?> clazz) {
+        // return AbstractAuthenticationToken.class.isAssignableFrom(authentication.getClass());
+        return UsernamePasswordAuthenticationToken.class.equals(clazz) || RestToken.class.equals(clazz);
     }
 
 

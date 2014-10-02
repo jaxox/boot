@@ -14,7 +14,7 @@ public class StringUtils {
      * @param str
      * @return
      */
-    public static String normalizeEmail(String str) {
+    public static String normalizeStr(String str) {
         if (str == null) {
             return null;
         }

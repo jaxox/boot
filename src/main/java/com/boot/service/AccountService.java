@@ -8,10 +8,13 @@ package com.boot.service;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.boot.dto.LoginDTO;
+import com.boot.dto.SignupForm;
 import com.boot.model.SocialIdea;
 import com.boot.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.context.request.WebRequest;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
@@ -25,6 +28,8 @@ public interface AccountService {
      * @return null if not found
      */
     User findByUserId(String userId);
+
+    User findByLogin(String login);
 
     /**
      * Gets all users in the database.
@@ -126,13 +131,13 @@ public interface AccountService {
      */
     void setAuthor(String userId, boolean isAuthor);
 
-    User createUserAccount(User user);
+    User createUserAccount(SignupForm signupForm, WebRequest request);
 
     boolean activateAccount(String token);
 
     void resendAccountActivationEmail(String email);
 
-    User login(User request);
+    User login(LoginDTO request);
 
 
 
@@ -150,4 +155,7 @@ public interface AccountService {
      * @return
      */
     List<SocialIdea> getAllSocialIdeas(String userId);
+
+    SignupForm getSignupForm(WebRequest request);
+
 }

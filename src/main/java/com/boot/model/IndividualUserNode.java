@@ -10,11 +10,11 @@ package com.boot.model;
  */
 public class IndividualUserNode {
     private String uid;
-    private String userName;
+    private String username;
 
-    public IndividualUserNode(String uid, String userName) {
+    public IndividualUserNode(String uid, String username) {
         this.uid = uid;
-        this.userName = userName;
+        this.username = username;
     }
 
     public String getUid() {
@@ -25,11 +25,11 @@ public class IndividualUserNode {
         this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

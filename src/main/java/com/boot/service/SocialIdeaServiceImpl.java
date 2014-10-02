@@ -127,14 +127,14 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
         //Prepare the info for saving the "like" info
         User loggedInUser = authorizationService.getLoggedInUser();
         String loggedInUserId = loggedInUser.getId();
-        String userName = loggedInUser.getUserName();
+        String username = loggedInUser.getUsername();
 
         //Loop thr the user liked's idea name and update to the SocialIdea obj
         Map<String, Map<String, String>> ideas = socialIdeaInDB.getIdeas();
         for(String ideaName : likedIdeaNames){
             Map<String, String> idea = ideas.get(ideaName);
             if(idea!=null){
-                idea.put(loggedInUserId,userName);
+                idea.put(loggedInUserId,username);
             }
         }
 
@@ -177,7 +177,7 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
 
 
         for(User newUser : foundedUsers){
-            persistedUsers.add(new IndividualUserNode(newUser.getId(), newUser.getUserName() ) );
+            persistedUsers.add(new IndividualUserNode(newUser.getId(), newUser.getUsername() ) );
         }
 
         return socialIdeaRep.save(socialIdeaInDB);

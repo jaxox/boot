@@ -1,4 +1,1 @@
-{
-    "primaryEmail":"wl.jason.yu@gmail.com",
-    "password":"password"
-}
+{"username":"xoxaj","password":"password","firstName":"Jay","lastName":"Yu"}

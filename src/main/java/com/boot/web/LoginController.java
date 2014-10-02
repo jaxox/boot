@@ -1,6 +1,7 @@
 package com.boot.web;
 
 
+import com.boot.dto.LoginDTO;
 import com.boot.model.User;
 import com.boot.service.AccountService;
 import org.apache.commons.logging.Log;
@@ -34,7 +35,7 @@ public class LoginController  {
 
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User login(@RequestBody @Valid User request) {
+    public User login(@RequestBody @Valid LoginDTO request) {
         return accountService.login(request);
     }
 

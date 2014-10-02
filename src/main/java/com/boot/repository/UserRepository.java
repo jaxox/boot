@@ -24,6 +24,8 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     User findByPrimaryEmail(String email);
 
+    User findByUsername(String username);
+
     Page findAll(Pageable pageable);
 
 }

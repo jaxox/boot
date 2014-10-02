@@ -1,28 +1,54 @@
 package com.boot.web;
 
-import com.boot.model.User;
-import com.boot.service.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-@RestController
+//@RestController
+//@Controller
 public class HelloController {
 
-    @Autowired
-    AccountService accountService;
 
-    @RequestMapping("/")
-    public String index() {
-        return "Greetings from Spring Boot!";
-    }
+//
+//    private Facebook facebook;
+//
+//    @Inject
+//    public HelloController(Facebook facebook) {
+//        this.facebook = facebook;
+//    }
+
+//    @RequestMapping(method= RequestMethod.GET)
+//    public String helloFacebook(Model model) {
+//
+//
+//         return  "redirect:/signin/facebook";
+//
+////        if (!facebook.isAuthorized()) {
+////            return "redirect:/connect/facebook";
+////        }
+//
+////
+////        PagedList<?> friendLists = facebook.friendOperations().getFriendLists();
+////
+////
+////        model.addAttribute(facebook.userOperations().getUserProfile());
+////        PagedList<Post> homeFeed = facebook.feedOperations().getHomeFeed();
+////        model.addAttribute("feed", homeFeed);
+//
+//        //return "hello";
+//    }
 
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value="/users", method= RequestMethod.POST)
-    public User addUser(@RequestBody User user) {
-        return accountService.createUserAccount(user);
-    }
+//    @Autowired
+//    AccountService accountService;
+
+//    @RequestMapping("/")
+//    public String index() {
+//        return "Greetings from Spring Boot!";
+//    }
+
+
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @RequestMapping(value="/users", method= RequestMethod.POST)
+//    public User addUser(@RequestBody User user) {
+//        return accountService.createUserAccount(user);
+//    }
 
 //
 //    @RequestMapping(value="/users", method= RequestMethod.POST)

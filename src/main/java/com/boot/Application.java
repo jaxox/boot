@@ -1,5 +1,6 @@
 package com.boot;
 
+import com.boot.adapter.SimpleSignInAdapter;
 import com.boot.security.RestAuthenticationProvider;
 import com.boot.security.SpringSecurityAuditorAware;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.Arrays;
@@ -40,6 +43,11 @@ public class Application extends WebMvcConfigurerAdapter {
         for (String beanName : beanNames) {
             System.out.println(beanName);
         }
+    }
+
+    @Bean
+    public SignInAdapter signInAdapter() {
+        return new SimpleSignInAdapter(new HttpSessionRequestCache());
     }
 
     @Bean
@@ -75,20 +83,32 @@ public class Application extends WebMvcConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
 
             //TODO: find out what exactly is that and how does it work in Restful way
-            http.csrf().disable();
+
 
 
 
             //http.authorizeRequests().antMatchers("/api/secure/**").fullyAuthenticated();
-
+            http.csrf().disable()
+//               .formLogin()
+//                    .loginPage("/signin")
+//                    .loginProcessingUrl("/signin/authenticate")
+//                    .failureUrl("/signin?param.error=bad_credentials")
+//               .and()
+                    .logout()
+                        .logoutUrl("/signout")
+                        .deleteCookies("JSESSIONID")
+               .and()
+                    .authorizeRequests()
+                        .antMatchers("/admin/**", "/favicon.ico", "/resources/**", "/auth/**", "/api/login", "/signup/**", "/disconnect/facebook").permitAll()
+                        .antMatchers("/**").authenticated();
 
             //Permit All
-            http
-                .formLogin().loginPage("/login")
-                .failureUrl("/login?error")
-                .permitAll();
-
-            http.authorizeRequests().antMatchers("/**").permitAll();
+//            http
+//                .formLogin().loginPage("/signin")
+//                .failureUrl("/signin?param.error=bad_credentials")
+//                .permitAll();
+//
+//            http.authorizeRequests().antMatchers("/**").permitAll();
 
         }
     }
