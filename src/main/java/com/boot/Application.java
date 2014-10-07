@@ -100,7 +100,7 @@ public class Application extends WebMvcConfigurerAdapter {
                .and()
                     .authorizeRequests()
                         .antMatchers("/admin/**", "/favicon.ico", "/resources/**", "/auth/**", "/api/login", "/signup/**", "/disconnect/facebook").permitAll()
-                        .antMatchers("/**").authenticated();
+                        .antMatchers("/**").permitAll();//authenticated();
 
             //Permit All
 //            http
