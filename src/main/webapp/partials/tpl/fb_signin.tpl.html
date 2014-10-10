@@ -1,0 +1,9 @@
+<div class="login-container">
+    <!-- FACEBOOK SIGNIN -->
+    <form class="form-signin" id="fb_signin" role="form">
+        <!--//id="fb_signin" th:action="@{/signin/facebook}" method="POST">-->
+        <!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>-->
+        <input type="hidden" name="scope" value="publish_stream,user_photos,offline_access" ng-model="scope">
+        <button class="btn btn-default" type="submit" ng-click="fb_signin(scope)"><img src="/image/social/facebook/sign-in-with-facebook.png"></button>
+    </form>
+</div>
