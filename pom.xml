@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.1.4.RELEASE</version>
+        <version>1.1.9.RELEASE</version>
     </parent>
 
 
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>1.4.0.RC1</version>
+            <version>1.4.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>commons-validator</groupId>
