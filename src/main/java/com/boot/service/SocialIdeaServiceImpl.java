@@ -4,6 +4,7 @@ import com.boot.exception.BadRequestException;
 import com.boot.exception.ObjectNotFoundException;
 import com.boot.model.IndividualUserNode;
 import com.boot.model.SocialIdea;
+import com.boot.model.SocialIdeaItem;
 import com.boot.model.User;
 import com.boot.repository.SocialIdeaRepository;
 import com.boot.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,8 +47,8 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
         authorizationService.checkAuthorization(socialIdea.getCreatorId());
 
         //Ideas can't contain any 'likes' info when first created
-        for(Map<String,String> likes : socialIdea.getIdeas().values()){
-            if( likes.size() > 0 ){
+        for(SocialIdeaItem socialIdeaItem : socialIdea.getIdeas()){
+            if( socialIdeaItem.getLikes().size() > 0 ){
                 throw new BadRequestException("Ideas can't contain any 'likes' info when first created");
             }
         }
@@ -85,7 +87,8 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
         socialIdeaInDB.setDescription(socialIdea.getDescription());
         socialIdeaInDB.setStartTime(socialIdea.getStartTime());
         socialIdeaInDB.setEndTime(socialIdea.getEndTime());
-        socialIdeaInDB.setLocation(socialIdea.getLocation());
+        socialIdeaInDB.setLocations(socialIdea.getLocations());
+        //TODO: more new variable to save
 
         return socialIdeaRep.save(socialIdeaInDB);
     }
@@ -130,11 +133,18 @@ public class SocialIdeaServiceImpl implements SocialIdeaService {
         String username = loggedInUser.getUsername();
 
         //Loop thr the user liked's idea name and update to the SocialIdea obj
-        Map<String, Map<String, String>> ideas = socialIdeaInDB.getIdeas();
+        List<SocialIdeaItem> ideas = socialIdeaInDB.getIdeas();
+
+        //to prevent O(N^2)
+        Map<String,SocialIdeaItem> map = new HashMap<String,SocialIdeaItem>();
+        for (SocialIdeaItem i : ideas) {
+            map.put(i.getName(),i);
+        }
+
         for(String ideaName : likedIdeaNames){
-            Map<String, String> idea = ideas.get(ideaName);
-            if(idea!=null){
-                idea.put(loggedInUserId,username);
+            SocialIdeaItem socialIdeaItem = map.get(ideaName);
+            if(socialIdeaItem!=null){
+                socialIdeaItem.addLike(loggedInUserId,username);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.boot.model;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -17,14 +18,17 @@ public class SocialIdea extends AbstractDocument {
     @NumberFormat
     private String creatorId;
     private String description;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String location;
 
     /**Embedded documents**/
-    //Map< [NameOfIdeas] , Map< [UserId who likes the idea] , [UserName] >>
-    @Size(min = 1, max = 10)
-    private Map<String,Map<String,String >> ideas = new LinkedHashMap<String,Map<String,String >>();
+    @Size(max = 10)
+    private List<SocialIdeaItem> ideas = new LinkedList<SocialIdeaItem>();
+
+    @Size(max = 10)
+    private List<SocialIdeaItem> locations = new LinkedList<SocialIdeaItem>();
 
     // Using embedded because, it is unlikely to be using all the info for the groups
     // and the group id and name are sufficient info for most cases.
@@ -37,7 +41,7 @@ public class SocialIdea extends AbstractDocument {
 //    @Size(max = 1000)
 //    private Map<String,String > individualUsers = new HashMap<String,String >();
 
-    @Size(max = 1000)
+    @Size(max = 100)
     private List<IndividualUserNode> individualUsers = new LinkedList<IndividualUserNode>();
 
 
@@ -80,24 +84,6 @@ public class SocialIdea extends AbstractDocument {
         this.endTime = endTime;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Map<String, Map<String, String>> getIdeas() {
-        return ideas;
-    }
-
-    public void setIdeas(Map<String, Map<String, String>> ideas) {
-        this.ideas = ideas;
-    }
-
-
-
     public Map<String, String> getGroups() {
         return groups;
     }
@@ -112,5 +98,37 @@ public class SocialIdea extends AbstractDocument {
 
     public void setIndividualUsers(List<IndividualUserNode> individualUsers) {
         this.individualUsers = individualUsers;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<SocialIdeaItem> getIdeas() {
+        return ideas;
+    }
+
+    public void setIdeas(List<SocialIdeaItem> ideas) {
+        this.ideas = ideas;
+    }
+
+    public List<SocialIdeaItem> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<SocialIdeaItem> locations) {
+        this.locations = locations;
     }
 }
